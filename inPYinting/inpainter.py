@@ -1,7 +1,10 @@
 import numpy
 
+from skimage.morphology import disk
+
 from inPYinting.algorithms.fast_marching.fast_marching_inpainter import FastMarchingInpainter
 from inPYinting.algorithms.navier_stokes.navier_stokes_inpainter import NavierStokesInpainter
+from inPYinting.algorithms.softcolor.softcolor_inpainter import SoftcolorInpainter
 from inPYinting.base.inpainting_algorithms import InpaintingAlgorithm
 from inPYinting.base.result import InpaintingResult
 
@@ -59,3 +62,15 @@ class Inpainter:
 
         navier_stokes_inpainter = NavierStokesInpainter(image=self.__image, mask=self.__mask)
         return navier_stokes_inpainter.inpaint(inpaint_radius)
+
+    def __inpaint_with_softcolor(self, **kwargs) -> InpaintingResult:
+        """
+        Inpaints the image with the softcolor framework.
+        """
+        # PARAMETER EXTRACTION
+        structuring_element = kwargs.get("structuring_element", disk(5).astype('float64'))
+        max_iterations = kwargs.get("max_iterations", 10)
+        # END
+
+        softcolor_inpainter = SoftcolorInpainter(image=self.__image, mask=self.__mask)
+        return softcolor_inpainter.inpaint(structuring_element=structuring_element, max_iterations=max_iterations)

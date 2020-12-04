@@ -13,6 +13,7 @@ setup(
     install_requires=[
         "numpy",
         "opencv-python",
-        "softcolor"
+        "softcolor",
+        "scikit-image"
     ]
 )

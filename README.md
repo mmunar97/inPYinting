@@ -1,3 +1,5 @@
-# inPYinting
+<p align="center">
+  <img src="assets/inpyinting_logo.png" height="200">
+</p>
 
-Compilation of some inpainting algorithms to reconstruct images from a mask 
+inPYinting is a recopilation of some inpainting algorithms written in pure Python.

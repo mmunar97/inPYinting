@@ -50,7 +50,7 @@ class SoftcolorInpainter:
                                                max_iterations=max_iterations)
         elapsed_time = time.time() - elapsed_time
 
-        return InpaintingResult(inpainted_image=inpainting_result, elapsed_time=elapsed_time)
+        return InpaintingResult(inpainted_image=img_as_ubyte(inpainting_result)[:, :, ::-1], elapsed_time=elapsed_time)
 
     def __generate_masked_image(self) -> numpy.ndarray:
         """

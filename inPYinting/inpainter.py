@@ -2,8 +2,11 @@ import numpy
 
 from skimage.morphology import disk
 
+from inPYinting.algorithms.exemplar_based.exemplar_based_inpainting import ExemplarBasedInpainter
 from inPYinting.algorithms.fast_marching.fast_marching_inpainter import FastMarchingInpainter
 from inPYinting.algorithms.navier_stokes.navier_stokes_inpainter import NavierStokesInpainter
+from inPYinting.algorithms.pde.amle_inpainter import AmleInpainter
+from inPYinting.algorithms.pde.harmonic_inpainter import HarmonicInpainter
 from inPYinting.algorithms.softcolor.softcolor_inpainter import SoftcolorInpainter
 from inPYinting.base.inpainting_algorithms import InpaintingAlgorithm
 from inPYinting.base.result import InpaintingResult
@@ -40,6 +43,14 @@ class Inpainter:
             return self.__inpaint_with_fast_marching(**kwargs)
         elif method == InpaintingAlgorithm.NAVIER_STOKES:
             return self.__inpaint_with_navier_stokes(**kwargs)
+        elif method == InpaintingAlgorithm.SOFTCOLOR_FUZZY_MORPHOLOGY:
+            return self.__inpaint_with_softcolor(**kwargs)
+        elif method == InpaintingAlgorithm.EXEMPLAR_BASED:
+            return self.__inpaint_with_exemplar_based(**kwargs)
+        elif method == InpaintingAlgorithm.PDE_AMLE:
+            return self.__inpaint_with_pde_amle(**kwargs)
+        elif method == InpaintingAlgorithm.PDE_HARMONIC:
+            return self.__inpaint_with_pde_harmonic(**kwargs)
 
     def __inpaint_with_fast_marching(self, **kwargs) -> InpaintingResult:
         """
@@ -69,8 +80,47 @@ class Inpainter:
         """
         # PARAMETER EXTRACTION
         structuring_element = kwargs.get("structuring_element", disk(5).astype('float64'))
+        structuring_element[structuring_element == 0] = numpy.nan
         max_iterations = kwargs.get("max_iterations", 10)
         # END
 
         softcolor_inpainter = SoftcolorInpainter(image=self.__image, mask=self.__mask)
         return softcolor_inpainter.inpaint(structuring_element=structuring_element, max_iterations=max_iterations)
+
+    def __inpaint_with_exemplar_based(self, **kwargs) -> InpaintingResult:
+        """
+        Inpaints the image with the Exemplar-Based method.
+        """
+        # PARAMETER EXTRACTION
+        tau = kwargs.get("tau", 170)
+        size = kwargs.get("size", 3)
+        # END
+
+        exemplar_based_inpainter = ExemplarBasedInpainter(self.__image, self.__mask)
+        return exemplar_based_inpainter.inpaint(tau=tau, size=size)
+
+    def __inpaint_with_pde_amle(self, **kwargs) -> InpaintingResult:
+        """
+        Inpaints the image with PDE-AMLE.
+        """
+        # PARAMETER EXTRACTION
+        fidelity = kwargs.get("fidelity", 10**2)
+        tolerance = kwargs.get("tolerance", 1e-12)
+        max_iterations = kwargs.get("max_iterations", 400)
+        differential_term = kwargs.get("differential_term", 0.01)
+        # END
+
+        amle_inpainter = AmleInpainter(self.__image, self.__mask)
+        return amle_inpainter.inpaint(fidelity, tolerance, max_iterations, differential_term)
+
+    def __inpaint_with_pde_harmonic(self, **kwargs) -> InpaintingResult:
+        """
+        Inpaints the image with PDE-Harmonic.
+        """
+        fidelity = kwargs.get("fidelity", 10)
+        tolerance = kwargs.get("tolerance", 1e-5)
+        max_iterations = kwargs.get("max_iterations", 500)
+        differential_term = kwargs.get("differential_term", 0.1)
+
+        harominc_inpainter = HarmonicInpainter(self.__image, self.__mask)
+        return harominc_inpainter.inpaint(fidelity, tolerance, max_iterations, differential_term)

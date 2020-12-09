@@ -10,15 +10,15 @@ class HarmonicInpainter(PdeInpainter):
 
     def __init__(self, image: numpy.ndarray, mask: numpy.ndarray):
         """
-       Initializes the object that inpaints a given image with the missing pixels represented by a mask.
+        Initializes the object that inpaints a given image with the missing pixels represented by a mask.
 
-       Args:
-           image: A three-dimensional numpy array, representing the image to be inpainted which entries are in 0...255
+        Args:
+            image: A three-dimensional numpy array, representing the image to be inpainted which entries are in 0...255
                   range and the channels are BGR.
-           mask: A two-dimensional numpy array, representing the mask with missing pixels. The value of each entry in
+            mask: A two-dimensional numpy array, representing the mask with missing pixels. The value of each entry in
                   the matrix must be in {0, 255} range; that is, only binary images are allowed. If the pixels needs to
                   be recovered, its value must be 255 and 0 otherwise.
-       """
+        """
         super(HarmonicInpainter, self).__init__(image, mask)
 
     def inpaint(self, fidelity: float, tolerance: float, max_iterations: int, differential_term: float) -> InpaintingResult:

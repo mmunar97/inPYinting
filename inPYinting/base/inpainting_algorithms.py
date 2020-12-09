@@ -8,3 +8,4 @@ class InpaintingAlgorithm(Enum):
     EXEMPLAR_BASED = 3
     PDE_AMLE = 4
     PDE_HARMONIC = 5
+    PDE_MUMFORD_SHAH = 6

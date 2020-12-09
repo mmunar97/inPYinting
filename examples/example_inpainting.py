@@ -16,6 +16,9 @@ if __name__ == "__main__":
     #result_sc = inpainter.inpaint(InpaintingAlgorithm.SOFTCOLOR_FUZZY_MORPHOLOGY)
     #result_eb = inpainter.inpaint(InpaintingAlgorithm.EXEMPLAR_BASED)
     #result_pde_amle = inpainter.inpaint(InpaintingAlgorithm.PDE_AMLE)
-    result_pde_har = inpainter.inpaint(InpaintingAlgorithm.PDE_HARMONIC)
+    #result_pde_har = inpainter.inpaint(InpaintingAlgorithm.PDE_HARMONIC)
+    result_pde_ms = inpainter.inpaint(InpaintingAlgorithm.PDE_MUMFORD_SHAH)
 
-    cv2.imwrite("/Users/marcmunar/Desktop/inpaint.png", result_pde_har.inpainted_image)
+
+    cv2.imwrite("/Users/marcmunar/Desktop/inpaint.png", result_pde_ms.inpainted_image)
+

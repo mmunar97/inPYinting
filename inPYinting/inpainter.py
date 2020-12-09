@@ -7,6 +7,7 @@ from inPYinting.algorithms.fast_marching.fast_marching_inpainter import FastMarc
 from inPYinting.algorithms.navier_stokes.navier_stokes_inpainter import NavierStokesInpainter
 from inPYinting.algorithms.pde.amle_inpainter import AmleInpainter
 from inPYinting.algorithms.pde.harmonic_inpainter import HarmonicInpainter
+from inPYinting.algorithms.pde.mumford_shah_inpainter import MumfordShahInpainter
 from inPYinting.algorithms.softcolor.softcolor_inpainter import SoftcolorInpainter
 from inPYinting.base.inpainting_algorithms import InpaintingAlgorithm
 from inPYinting.base.result import InpaintingResult
@@ -51,6 +52,8 @@ class Inpainter:
             return self.__inpaint_with_pde_amle(**kwargs)
         elif method == InpaintingAlgorithm.PDE_HARMONIC:
             return self.__inpaint_with_pde_harmonic(**kwargs)
+        elif method == InpaintingAlgorithm.PDE_MUMFORD_SHAH:
+            return self.__inpaint_with_pde_mumford_shah(**kwargs)
 
     def __inpaint_with_fast_marching(self, **kwargs) -> InpaintingResult:
         """
@@ -117,10 +120,28 @@ class Inpainter:
         """
         Inpaints the image with PDE-Harmonic.
         """
+        # PARAMETER EXTRACTION
         fidelity = kwargs.get("fidelity", 10)
         tolerance = kwargs.get("tolerance", 1e-5)
         max_iterations = kwargs.get("max_iterations", 500)
         differential_term = kwargs.get("differential_term", 0.1)
+        # END
 
         harominc_inpainter = HarmonicInpainter(self.__image, self.__mask)
         return harominc_inpainter.inpaint(fidelity, tolerance, max_iterations, differential_term)
+
+    def __inpaint_with_pde_mumford_shah(self, **kwargs) -> InpaintingResult:
+        """
+        Inpaints the image with PDE-Mumford Shah.
+        """
+        # PARAMETER EXTRACTION
+        fidelity = kwargs.get("fidelity", 10e9)
+        alpha = kwargs.get("alpha", 1)
+        gamma = kwargs.get("gamma", 0.5)
+        epsilon = kwargs.get("epsilon", 0.05)
+        max_iterations = kwargs.get("max_iterations", 20)
+        tolerance = kwargs.get("tolerance", 1e-14)
+        # END
+
+        mumford_shah_inpainter = MumfordShahInpainter(self.__image, self.__mask)
+        return mumford_shah_inpainter.inpaint(fidelity, alpha, gamma, epsilon, max_iterations, tolerance)

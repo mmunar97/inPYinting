@@ -9,3 +9,4 @@ class InpaintingAlgorithm(Enum):
     PDE_AMLE = 4
     PDE_HARMONIC = 5
     PDE_MUMFORD_SHAH = 6
+    PDE_CAHN_HILLIARD = 7

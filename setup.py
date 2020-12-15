@@ -11,6 +11,7 @@ setup(
     description='Set of algorithms for image reconstruction and inpainting',
     include_package_data=True,
     install_requires=[
+        "scipy",
         "numpy",
         "opencv-python",
         "softcolor",

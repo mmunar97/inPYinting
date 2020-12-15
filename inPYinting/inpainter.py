@@ -6,6 +6,7 @@ from inPYinting.algorithms.exemplar_based.exemplar_based_inpainting import Exemp
 from inPYinting.algorithms.fast_marching.fast_marching_inpainter import FastMarchingInpainter
 from inPYinting.algorithms.navier_stokes.navier_stokes_inpainter import NavierStokesInpainter
 from inPYinting.algorithms.pde.amle_inpainter import AmleInpainter
+from inPYinting.algorithms.pde.cahn_hilliard_inpainter import CahnHilliardInpainter
 from inPYinting.algorithms.pde.harmonic_inpainter import HarmonicInpainter
 from inPYinting.algorithms.pde.mumford_shah_inpainter import MumfordShahInpainter
 from inPYinting.algorithms.softcolor.softcolor_inpainter import SoftcolorInpainter
@@ -54,6 +55,8 @@ class Inpainter:
             return self.__inpaint_with_pde_harmonic(**kwargs)
         elif method == InpaintingAlgorithm.PDE_MUMFORD_SHAH:
             return self.__inpaint_with_pde_mumford_shah(**kwargs)
+        elif method == InpaintingAlgorithm.PDE_CAHN_HILLIARD:
+            return self.__inpaint_with_pde_cahn_hilliard(**kwargs)
 
     def __inpaint_with_fast_marching(self, **kwargs) -> InpaintingResult:
         """
@@ -145,3 +148,17 @@ class Inpainter:
 
         mumford_shah_inpainter = MumfordShahInpainter(self.__image, self.__mask)
         return mumford_shah_inpainter.inpaint(fidelity, alpha, gamma, epsilon, max_iterations, tolerance)
+
+    def __inpaint_with_pde_cahn_hilliard(self, **kwargs) -> InpaintingResult:
+        """
+        Inpaints the image with PDE-Cahn Hilliard.
+        """
+        # PARAMETER EXTRACTION
+        differential_term = kwargs.get("differential_term", 1)
+        fidelity = kwargs.get("fidelity", 10)
+        max_iterations = kwargs.get("max_iterations", 4000)
+        # END
+
+        cahn_hilliard_inpainter = CahnHilliardInpainter(self.__image, self.__mask)
+        return cahn_hilliard_inpainter.inpaint(differential_term, fidelity, max_iterations)
+

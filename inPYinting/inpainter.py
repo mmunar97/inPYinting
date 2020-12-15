@@ -9,6 +9,7 @@ from inPYinting.algorithms.pde.amle_inpainter import AmleInpainter
 from inPYinting.algorithms.pde.cahn_hilliard_inpainter import CahnHilliardInpainter
 from inPYinting.algorithms.pde.harmonic_inpainter import HarmonicInpainter
 from inPYinting.algorithms.pde.mumford_shah_inpainter import MumfordShahInpainter
+from inPYinting.algorithms.pde.transport_inpainting import TransportInpainter
 from inPYinting.algorithms.softcolor.softcolor_inpainter import SoftcolorInpainter
 from inPYinting.base.inpainting_algorithms import InpaintingAlgorithm
 from inPYinting.base.result import InpaintingResult
@@ -57,6 +58,8 @@ class Inpainter:
             return self.__inpaint_with_pde_mumford_shah(**kwargs)
         elif method == InpaintingAlgorithm.PDE_CAHN_HILLIARD:
             return self.__inpaint_with_pde_cahn_hilliard(**kwargs)
+        elif method == InpaintingAlgorithm.PDE_TRANSPORT:
+            return self.__inpaint_with_pde_transport(**kwargs)
 
     def __inpaint_with_fast_marching(self, **kwargs) -> InpaintingResult:
         """
@@ -162,3 +165,19 @@ class Inpainter:
         cahn_hilliard_inpainter = CahnHilliardInpainter(self.__image, self.__mask)
         return cahn_hilliard_inpainter.inpaint(differential_term, fidelity, max_iterations)
 
+    def __inpaint_with_pde_transport(self, **kwargs) -> InpaintingResult:
+        """
+        Inpaints the image tih PDE-Transport.
+        """
+        # PARAMETER EXTRACTION
+        tolerance = kwargs.get("tolerance", 1e-5)
+        differential_term = kwargs.get("differential_term", 0.1)
+        epsilon = 1e-10
+        iterations_inpainting = kwargs.get("iterations_inpainting", 40)
+        iterations_anisotropic = kwargs.get("iterations_anisotropic", 2)
+        max_iterations = kwargs.get("max_iterations", 50)
+        # END
+
+        transport_inpainter = TransportInpainter(self.__image, self.__mask)
+        return transport_inpainter.inpaint(tolerance, differential_term, epsilon, iterations_inpainting,
+                                           iterations_anisotropic, max_iterations)

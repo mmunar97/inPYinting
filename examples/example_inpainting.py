@@ -17,7 +17,7 @@ if __name__ == "__main__":
     #result_pde_amle = inpainter.inpaint(InpaintingAlgorithm.PDE_AMLE)
     #result_pde_har = inpainter.inpaint(InpaintingAlgorithm.PDE_HARMONIC)
     #result_pde_ms = inpainter.inpaint(InpaintingAlgorithm.PDE_MUMFORD_SHAH)
-    result_pde_ch = inpainter.inpaint(InpaintingAlgorithm.PDE_CAHN_HILLIARD)
+    #result_pde_ch = inpainter.inpaint(InpaintingAlgorithm.PDE_CAHN_HILLIARD)
+    result_pde_tr = inpainter.inpaint(InpaintingAlgorithm.PDE_TRANSPORT)
 
-
-    cv2.imwrite(r"C:\Users\Usuario\Desktop\inpaint.png", result_pde_ch.inpainted_image)
+    cv2.imwrite(r"C:\Users\Usuario\Desktop\inpaint.png", result_pde_tr.inpainted_image)

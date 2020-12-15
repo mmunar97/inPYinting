@@ -30,17 +30,23 @@ class MumfordShahInpainter(PdeInpainter):
     def inpaint(self, fidelity: float, alpha: float, gamma: float, epsilon: float,
                 max_iterations: int, tolerance: float) -> InpaintingResult:
         """
+        Inpaints the image using the Mumford-Shah inpainting.
+
+        References:
+            Esedoglu, S., & Shen, J. (2002).
+            Digital inpainting based on the Mumford-Shah-Euler image model.
+            European Journal of Applied Mathematics, 13(04), 353-370.
 
         Args:
-            fidelity:
-            alpha:
-            gamma:
-            epsilon:
-            max_iterations:
-            tolerance:
+            fidelity: A float value, representing the weight given to the correct pixels.
+            alpha: A float value, representing the alpha regularization parameter in the equation.
+            gamma: A float value, representing the gamma regularization parameter in the equation.
+            epsilon: A float value, representing the epsilon regularization parameter in the equation.
+            max_iterations: An integer, representing the maximum number of iterations to perform in each channel.
+            tolerance: A float value, representing the threshold to stop the execution.
 
         Returns:
-
+            An InpaintingResult object, representing the result of the inpaint.
         """
         elapsed_time = time.time()
         result = self.__ms_inpainting(fidelity, alpha, gamma, epsilon, max_iterations, tolerance)

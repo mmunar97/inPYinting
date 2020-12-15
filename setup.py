@@ -14,6 +14,7 @@ setup(
         "numpy",
         "opencv-python",
         "softcolor",
-        "scikit-image"
+        "scikit-image",
+        "pyFFTW"
     ]
 )

@@ -4,7 +4,7 @@ setup(
     name='inPYinting',
     version='1.0',
     packages=['inPYinting'],
-    url='https://github.com/mmunar97',
+    url='https://github.com/mmunar97/inPYinting',
     license='mit',
     author='marcmunar',
     author_email='marc.munar@uib.es',

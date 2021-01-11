@@ -6,8 +6,11 @@ from inPYinting.inpainter import Inpainter
 
 if __name__ == "__main__":
 
-    image = cv2.imread(r"C:\Users\Usuario\Desktop\Inpainting Demo\mumford_shah_clean.png")
-    mask = 255-cv2.imread(r"C:\Users\Usuario\Desktop\Inpainting Demo\mumford_shah_mask.png", cv2.IMREAD_GRAYSCALE)
+    image_path = r"C:\Users\Usuario\Desktop\Inpainting Demo\mumford_shah_clean.png"
+    mask_path = r"C:\Users\Usuario\Desktop\Inpainting Demo\mumford_shah_mask.png"
+
+    image = cv2.imread(image_path)
+    mask = 255-cv2.imread(mask_path, cv2.IMREAD_GRAYSCALE)
 
     inpainter = Inpainter(image=image, mask=mask)
     #result_fm = inpainter.inpaint(InpaintingAlgorithm.FAST_MARCHING)

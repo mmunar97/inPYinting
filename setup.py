@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='inPYinting',
-    version='1.0',
+    version='1.1',
     packages=['inPYinting'],
     url='https://github.com/mmunar97/inPYinting',
     license='mit',
